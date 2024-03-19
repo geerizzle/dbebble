@@ -5,13 +5,16 @@ use reqwest::{
     Client,
 };
 
-use crate::{env::APIKeys, statics::API_URL};
+use crate::{
+    env::APIKeys,
+    statics::{API_URL, TIMETABLES_LIMIT_MIN},
+};
 
 #[derive(Debug, Default)]
 pub(crate) struct DBebbleServer {
     client: Client,
     creds: APIKeys,
-    num_sent: u32,
+    num_sent: u8,
 }
 
 impl DBebbleServer {
@@ -19,16 +22,48 @@ impl DBebbleServer {
         self.num_sent = 0;
     }
 
-    pub async fn get_station_eva(&mut self, station: &str) -> Result<(), String> {
-        let url = API_URL.to_string() + self.parse_station_query(station).as_str();
+    pub async fn get_current_plan(
+        &mut self,
+        eva_id: &str,
+        date: &str,
+        time: &str,
+    ) -> Result<String, String> {
+        let url = format!("{}/plan/{}/{}/{}", API_URL, eva_id, date, time);
+        println!("URL: {url:?}");
         let request = self.client.get(url).headers(self.generate_headers());
-        if self.num_sent == 60 {
+        if self.num_sent == TIMETABLES_LIMIT_MIN {
             return Err("LOG: Too much requests, waiting for 60 secs..".to_string());
         }
-        let response = request.send().await.unwrap().text().await.unwrap();
-        println!("Response: {response:?}");
+        let response: String = request.send().await.unwrap().text().await.unwrap();
         self.num_sent += 1;
-        Ok(())
+        Ok(response)
+    }
+
+    pub async fn get_station_eva(&mut self, station: &str) -> Result<String, String> {
+        let url = format!("{}/{}", API_URL, self.parse_station_query(station));
+        let request = self.client.get(url).headers(self.generate_headers());
+        if self.num_sent == TIMETABLES_LIMIT_MIN {
+            return Err("LOG: Too much requests, waiting for 60 secs..".to_string());
+        }
+        let response: String = request.send().await.unwrap().text().await.unwrap();
+        let response = self.extract_eva(response);
+        self.num_sent += 1;
+        Ok(response)
+    }
+
+    fn extract_eva(&self, response: String) -> String {
+        let mut id = String::new();
+        for x in response.split(" ") {
+            let pos_equal = x.find("=");
+            if pos_equal.is_none() {
+                continue;
+            }
+            let (key, value) = x.split_at(pos_equal.unwrap());
+            if key == "eva" {
+                id = value.chars().filter(|ch| ch.is_digit(10)).collect();
+            }
+        }
+        id
     }
 
     fn parse_station_query(&self, query: &str) -> String {
