@@ -8,13 +8,16 @@ mod statics;
 #[tokio::main]
 async fn main() -> reqwest::Result<()> {
     let mut server = DBebbleServer::default();
-    let query = "basel bad";
+    let from = "basel bad";
     let time = "08";
     let date = "240319";
-    let id = server.get_station_eva(query).await.unwrap();
-    println!("Station ID: {id:?}");
+    let from_id = server.get_station_eva(from).await.unwrap();
+    println!("From ID: {from_id:?}");
     loop {
-        match server.get_current_plan(id.as_str(), date, time).await {
+        if from == "quit" {
+            break;
+        }
+        match server.get_current_plan(from_id.as_str(), date, time).await {
             Ok(res) => println!("{res:?}"),
             Err(e) => {
                 println!("LOG: {e:?}");
