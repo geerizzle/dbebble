@@ -5,8 +5,8 @@ use std::{
 
 #[derive(Debug)]
 pub(crate) struct APIKeys {
-    client_id: String,
-    api_key: String,
+    pub(crate) client_id: String,
+    pub(crate) api_key: String,
 }
 
 impl Default for APIKeys {
