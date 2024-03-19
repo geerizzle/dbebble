@@ -11,25 +11,27 @@ use crate::{env::APIKeys, statics::API_URL};
 pub(crate) struct DBebbleServer {
     client: Client,
     creds: APIKeys,
-    num_sent: u8,
+    num_sent: u32,
 }
 
 impl DBebbleServer {
-    fn reset(&mut self) -> () {
+    pub fn reset(&mut self) -> () {
         self.num_sent = 0;
     }
 
-    pub async fn get_station_eva(&mut self, station: &str) -> reqwest::Result<()> {
-        let url = API_URL.to_string() + self.parse_query(station).as_str();
-        println!("Url: {url:?}");
+    pub async fn get_station_eva(&mut self, station: &str) -> Result<(), String> {
+        let url = API_URL.to_string() + self.parse_station_query(station).as_str();
         let request = self.client.get(url).headers(self.generate_headers());
-        let response = request.send().await?.text().await?;
-        self.num_sent += 1;
+        if self.num_sent == 60 {
+            return Err("LOG: Too much requests, waiting for 60 secs..".to_string());
+        }
+        let response = request.send().await.unwrap().text().await.unwrap();
         println!("Response: {response:?}");
+        self.num_sent += 1;
         Ok(())
     }
 
-    fn parse_query(&self, query: &str) -> String {
+    fn parse_station_query(&self, query: &str) -> String {
         let parsed: Vec<&str> = query.split(" ").collect();
         let query: String = "/station/".to_string() + parsed.join("%20").as_str();
         query
