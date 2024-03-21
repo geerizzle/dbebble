@@ -7,6 +7,7 @@ use reqwest::{
 
 use crate::{
     env::APIKeys,
+    parser::ResponseParser,
     statics::{API_URL, TIMETABLES_LIMIT_MIN},
 };
 
@@ -29,10 +30,9 @@ impl DBebbleServer {
         time: &str,
     ) -> Result<String, String> {
         let url = format!("{}/plan/{}/{}/{}", API_URL, eva_id, date, time);
-        println!("URL: {url:?}");
         let request = self.client.get(url).headers(self.generate_headers());
         if self.num_sent == TIMETABLES_LIMIT_MIN {
-            return Err("LOG: Too much requests, waiting for 60 secs..".to_string());
+            return Err("Too much requests, waiting for 60 secs..".to_string());
         }
         let response: String = request.send().await.unwrap().text().await.unwrap();
         self.num_sent += 1;
@@ -40,10 +40,10 @@ impl DBebbleServer {
     }
 
     pub async fn get_station_eva(&mut self, station: &str) -> Result<String, String> {
-        let url = format!("{}/{}", API_URL, self.parse_station_query(station));
+        let url = format!("{}/{}", API_URL, self.generate_station_query(station));
         let request = self.client.get(url).headers(self.generate_headers());
         if self.num_sent == TIMETABLES_LIMIT_MIN {
-            return Err("LOG: Too much requests, waiting for 60 secs..".to_string());
+            return Err("Too much requests, waiting for 60 secs..".to_string());
         }
         let response: String = request.send().await.unwrap().text().await.unwrap();
         let response = self.extract_eva(response);
@@ -66,7 +66,7 @@ impl DBebbleServer {
         id
     }
 
-    fn parse_station_query(&self, query: &str) -> String {
+    fn generate_station_query(&self, query: &str) -> String {
         let parsed: Vec<&str> = query.split(" ").collect();
         let query: String = "/station/".to_string() + parsed.join("%20").as_str();
         query
