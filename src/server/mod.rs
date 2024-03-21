@@ -75,7 +75,7 @@ impl DBebbleServer {
 
     fn generate_station_query(&self, query: &str) -> String {
         let parsed: Vec<&str> = query.split(" ").collect();
-        let query: String = "/station/".to_string() + parsed.join("%20").as_str();
+        let query: String = "/station/".to_string() + parsed.join("%20").to_lowercase().as_str();
         query
     }
 
