@@ -1,102 +1,91 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <timetable station='Basel Bad Bf'>
-  <s id="121888493607541948-2403211334-2">
-    <tl t="p" o="L7" c="SBB" n="87834" />
-    <ar pt="2403211340" pp="6" l="S6" ppth="Basel SBB" />
-    <dp pt="2403211347" pp="6" l="S6"
-      ppth="Riehen Niederholz|Riehen|Lörrach-Stetten|Lörrach Museum/Burghof|Lörrach Hbf|Lörrach Schwarzwaldstraße|Lörrach-Haagen/Messe|Lörrach-Brombach/Hauingen|Steinen|Maulburg|Schopfheim West|Schopfheim|Schopfheim-Schlattholz|Fahrnau|Hausen-Raitbach|Zell(Wiesental)" />
-  </s>
-  <s id="-3071378456131942424-2403211323-1">
-    <tl f="N" t="p" o="800631" c="RB" n="17255" />
-    <dp pt="2403211323" pp="10" l="30"
-      ppth="Grenzach|Wyhlen|Herten(Baden)|Rheinfelden(Baden)|Beuggen|Schwörstadt|Wehr-Brennet|Bad Säckingen|Murg(Baden)|Laufenburg(Baden)|Laufenburg(Baden)Ost|Albbruck|Dogern|Waldshut" />
-  </s>
-  <s id="-8005832318483472083-2403211358-1">
-    <tl f="N" t="p" o="8006C5" c="RE" n="17020" />
-    <dp pt="2403211358" pp="10" l="7"
-      ppth="Weil am Rhein|Müllheim(Baden)|Heitersheim|Bad Krozingen|Freiburg(Breisgau) Hbf|Denzlingen|Emmendingen|Riegel-Malterdingen|Kenzingen|Herbolzheim(Breisg)|Lahr(Schwarzw)|Offenburg|Appenweier|Renchen|Achern|Bühl(Baden)|Baden-Baden|Rastatt" />
-  </s>
-  <s id="1203246100298575434-2403211243-20">
-    <tl f="N" t="p" o="8006C4" c="RB" n="17171" />
-    <ar pt="2403211350" pp="9" l="27"
-      ppth="Freiburg(Breisgau) Hbf|Freiburg-St Georgen|Ebringen|Schallstadt|Norsingen|Bad Krozingen|Heitersheim|Buggingen|Müllheim(Baden)|Auggen|Schliengen|Bad Bellingen|Rheinweiler|Kleinkems|Istein|Efringen-Kirchen|Eimeldingen|Haltingen|Weil am Rhein" />
-  </s>
-  <s id="1511116138857988510-2403211205-18">
-    <tl f="N" t="p" o="800631" c="RB" n="17256" />
-    <ar pt="2403211308" pp="8" l="30"
+  <s id="-8180819818752928604-2403211605-18">
+    <tl f="N" t="p" o="800631" c="RB" n="17274" />
+    <ar pt="2403211708" pp="8" l="30"
       ppth="Lauchringen|Lauchringen West|Tiengen(Hochrhein)|Waldshut|Dogern|Albbruck|Laufenburg(Baden)Ost|Laufenburg(Baden)|Murg(Baden)|Bad Säckingen|Wehr-Brennet|Schwörstadt|Beuggen|Rheinfelden(Baden)|Herten(Baden)|Wyhlen|Grenzach" />
   </s>
-  <s id="-6769920502209639937-2403211304-17">
-    <tl t="p" o="L7" c="SBB" n="87833" />
-    <ar pt="2403211341" pp="11" l="S6"
+  <s id="-4732314150812084161-2403211704-17">
+    <tl t="p" o="L7" c="SBB" n="87849" />
+    <ar pt="2403211741" pp="11" l="S6"
       ppth="Zell(Wiesental)|Hausen-Raitbach|Fahrnau|Schopfheim-Schlattholz|Schopfheim|Schopfheim West|Maulburg|Steinen|Lörrach-Brombach/Hauingen|Lörrach-Haagen/Messe|Lörrach Schwarzwaldstraße|Lörrach Hbf|Lörrach Museum/Burghof|Lörrach-Stetten|Riehen|Riehen Niederholz" />
-    <dp pt="2403211345" pp="11" l="S6" ppth="Basel SBB" />
+    <dp pt="2403211745" pp="11" l="S6" ppth="Basel SBB" />
   </s>
-  <s id="1229461363049522792-2403211353-1">
-    <tl f="N" t="p" o="800631" c="RB" n="17257" />
-    <dp pt="2403211353" pp="8" l="30"
-      ppth="Grenzach|Wyhlen|Herten(Baden)|Rheinfelden(Baden)|Beuggen|Schwörstadt|Wehr-Brennet|Bad Säckingen|Murg(Baden)|Laufenburg(Baden)|Laufenburg(Baden)Ost|Albbruck|Dogern|Waldshut|Tiengen(Hochrhein)|Lauchringen West|Lauchringen" />
+  <s id="6673571182868726764-2403211758-1">
+    <tl f="N" t="p" o="8006C5" c="RE" n="17026" />
+    <dp pt="2403211758" pp="10" l="7"
+      ppth="Weil am Rhein|Müllheim(Baden)|Heitersheim|Bad Krozingen|Freiburg(Breisgau) Hbf|Denzlingen|Emmendingen|Riegel-Malterdingen|Kenzingen|Herbolzheim(Breisg)|Lahr(Schwarzw)|Offenburg" />
   </s>
-  <s id="5013761370749864715-2403211318-1">
-    <tl f="N" t="p" o="8006C4" c="RB" n="17176" />
-    <dp pt="2403211318" pp="9" l="27"
-      ppth="Weil am Rhein|Haltingen|Eimeldingen|Efringen-Kirchen|Istein|Kleinkems|Rheinweiler|Bad Bellingen|Schliengen|Auggen|Müllheim(Baden)|Buggingen|Heitersheim|Bad Krozingen|Norsingen|Schallstadt|Ebringen|Freiburg-St Georgen|Freiburg(Breisgau) Hbf" />
+  <s id="-103839850161073380-2403211445-12">
+    <tl f="N" t="p" o="800693" c="IRE" n="3060" />
+    <ar pt="2403211712" pp="7" l="3"
+      ppth="Friedrichshafen Stadt|Salem|Überlingen|Radolfzell|Singen(Hohentwiel)|Schaffhausen|Erzingen(Baden)|Tiengen(Hochrhein)|Waldshut|Bad Säckingen|Rheinfelden(Baden)" />
   </s>
-  <s id="-2314209357032111465-2403211234-17">
-    <tl t="p" o="L7" c="SBB" n="87831" />
-    <ar pt="2403211313" pp="11" l="S6"
-      ppth="Zell(Wiesental)|Hausen-Raitbach|Fahrnau|Schopfheim-Schlattholz|Schopfheim|Schopfheim West|Maulburg|Steinen|Lörrach-Brombach/Hauingen|Lörrach-Haagen/Messe|Lörrach Schwarzwaldstraße|Lörrach Hbf|Lörrach Museum/Burghof|Lörrach-Stetten|Riehen|Riehen Niederholz" />
-    <dp pt="2403211319" pp="11" l="S6" ppth="Basel SBB" />
+  <s id="3909227462331942070-2403211452-26">
+    <tl f="N" t="p" o="8006C5" c="RE" n="17019" />
+    <ar pt="2403211723" pp="10" l="7"
+      ppth="Rastatt|Baden-Baden|Bühl(Baden)|Achern|Renchen|Appenweier|Offenburg|Lahr(Schwarzw)|Orschweier|Ringsheim/Europa-Park|Herbolzheim(Breisg)|Kenzingen|Riegel-Malterdingen|Emmendingen|Denzlingen|Freiburg(Breisgau) Hbf|Schallstadt|Bad Krozingen|Heitersheim|Müllheim(Baden)|Schliengen|Bad Bellingen|Efringen-Kirchen|Haltingen|Weil am Rhein" />
   </s>
-  <s id="8621259970161220047-2403210449-18">
-    <tl f="F" t="p" o="80" c="EC" n="7" />
-    <ar pt="2403211323" pp="3"
-      ppth="Hamburg-Harburg|Bremen Hbf|Diepholz|Osnabrück Hbf|Münster(Westf)Hbf|Dortmund Hbf|Bochum Hbf|Essen Hbf|Duisburg Hbf|Düsseldorf Hbf|Köln Messe/Deutz Gl.11-12|Bonn-Beuel|Koblenz Hbf|Mainz Hbf|Mannheim Hbf|Karlsruhe Hbf|Freiburg(Breisgau) Hbf" />
-    <dp pt="2403211326" pp="3"
-      ppth="Basel SBB|Liestal|Olten|Bern|Thun|Spiez|Interlaken West|Interlaken Ost" />
-  </s>
-  <s id="1817481756781611586-2403210542-15">
-    <tl f="F" t="p" o="80" c="ICE" n="277" />
-    <ar pt="2403211337" pp="3"
-      ppth="Berlin Ostbahnhof|Berlin Hbf|Berlin-Spandau|Wolfsburg Hbf|Göttingen|Kassel-Wilhelmshöhe|Fulda|Hanau Hbf|Frankfurt(Main)Hbf|Mannheim Hbf|Karlsruhe Hbf|Baden-Baden|Offenburg|Freiburg(Breisgau) Hbf" />
-    <dp pt="2403211340" pp="3" ppth="Basel SBB" />
-  </s>
-  <s id="7094182456030488553-2403211349-1">
-    <tl f="N" t="p" o="800693" c="IRE" n="3061" />
-    <dp pt="2403211349" pp="7" l="3"
+  <s id="1422118185582760869-2403211749-1">
+    <tl f="N" t="p" o="800693" c="IRE" n="3069" />
+    <dp pt="2403211749" pp="7" l="3"
       ppth="Rheinfelden(Baden)|Bad Säckingen|Waldshut|Tiengen(Hochrhein)|Erzingen(Baden)|Schaffhausen|Singen(Hohentwiel)|Radolfzell|Überlingen|Salem|Friedrichshafen Stadt" />
   </s>
-  <s id="776874307993202871-2403211306-2">
-    <tl f="F" t="p" o="80" c="ICE" n="72" />
-    <ar pt="2403211312" pp="4" ppth="Basel SBB" />
-    <dp pt="2403211314" pp="4"
-      ppth="Freiburg(Breisgau) Hbf|Offenburg|Baden-Baden|Karlsruhe Hbf|Mannheim Hbf|Frankfurt(Main)Hbf|Kassel-Wilhelmshöhe|Göttingen|Hannover Hbf|Celle|Uelzen|Lüneburg|Hamburg-Harburg|Hamburg Hbf" />
+  <s id="4185774277547352356-2403211723-1">
+    <tl f="N" t="p" o="800631" c="RB" n="17271" />
+    <dp pt="2403211723" pp="8" l="30"
+      ppth="Grenzach|Wyhlen|Herten(Baden)|Rheinfelden(Baden)|Beuggen|Schwörstadt|Wehr-Brennet|Bad Säckingen|Murg(Baden)|Laufenburg(Baden)|Laufenburg(Baden)Ost|Albbruck|Dogern|Waldshut" />
   </s>
-  <s id="1404018334054694699-2403210523-15">
-    <tl f="F" t="p" o="80" c="ICE" n="71" />
-    <ar pt="2403211247" pp="3"
-      ppth="Hamburg Hbf|Hamburg-Harburg|Lüneburg|Uelzen|Celle|Hannover Hbf|Göttingen|Kassel-Wilhelmshöhe|Frankfurt(Main)Hbf|Mannheim Hbf|Karlsruhe Hbf|Baden-Baden|Offenburg|Freiburg(Breisgau) Hbf" />
-    <dp pt="2403211303" pp="3" ppth="Basel SBB" />
+  <s id="-7573651573329216408-2403211500-9">
+    <tl f="F" t="p" o="85" c="ICE" n="376" />
+    <ar pt="2403211713" pp="4"
+      ppth="Interlaken Ost|Interlaken West|Spiez|Thun|Bern|Olten|Liestal|Basel SBB" />
+    <dp pt="2403211715" pp="4"
+      ppth="Freiburg(Breisgau) Hbf|Offenburg|Baden-Baden|Karlsruhe Hbf|Mannheim Hbf|Frankfurt(Main)Hbf|Kassel-Wilhelmshöhe|Göttingen|Hannover Hbf|Hamburg Hbf" />
   </s>
-  <s id="3122704554359542538-2403211145-8">
-    <tl f="N" t="p" o="800693" c="IRE" n="3052" />
-    <ar pt="2403211312" pp="7" l="3" pde="Lindau-Reutin"
-      ppth="Singen(Hohentwiel)|Schaffhausen|Erzingen(Baden)|Tiengen(Hochrhein)|Waldshut|Bad Säckingen|Rheinfelden(Baden)" />
+  <s id="-5036600979734019557-2403210946-14">
+    <tl f="F" t="p" o="80" c="ICE" n="371" />
+    <ar pt="2403211736" pp="3"
+      ppth="Berlin Ostbahnhof|Berlin Hbf|Berlin-Spandau|Wolfsburg Hbf|Göttingen|Kassel-Wilhelmshöhe|Fulda|Hanau Hbf|Frankfurt(Main)Hbf|Mannheim Hbf|Karlsruhe Hbf|Offenburg|Freiburg(Breisgau) Hbf" />
+    <dp pt="2403211740" pp="3"
+      ppth="Basel SBB|Liestal|Olten|Bern|Thun|Spiez|Interlaken West|Interlaken Ost" />
   </s>
-  <s id="2788307367467891027-2403211246-15">
-    <tl f="N" t="p" o="800631" c="RB" n="17258" />
-    <ar pt="2403211338" pp="5" l="30"
+  <s id="6201386277859419133-2403211734-2">
+    <tl t="p" o="L7" c="SBB" n="87850" />
+    <ar pt="2403211740" pp="6" l="S6" ppth="Basel SBB" />
+    <dp pt="2403211747" pp="6" l="S6"
+      ppth="Riehen Niederholz|Riehen|Lörrach-Stetten|Lörrach Museum/Burghof|Lörrach Hbf|Lörrach Schwarzwaldstraße|Lörrach-Haagen/Messe|Lörrach-Brombach/Hauingen|Steinen|Maulburg|Schopfheim West|Schopfheim|Schopfheim-Schlattholz|Fahrnau|Hausen-Raitbach|Zell(Wiesental)" />
+  </s>
+  <s id="-6289754572648672849-2403211718-1">
+    <tl f="N" t="p" o="8006C4" c="RB" n="17186" />
+    <dp pt="2403211718" pp="9" l="27"
+      ppth="Weil am Rhein|Haltingen|Eimeldingen|Efringen-Kirchen|Istein|Kleinkems|Rheinweiler|Bad Bellingen|Schliengen|Auggen|Müllheim(Baden)|Buggingen|Heitersheim|Bad Krozingen|Norsingen|Schallstadt|Ebringen|Freiburg-St Georgen|Freiburg(Breisgau) Hbf" />
+  </s>
+  <s id="-4673951388270662975-2403211646-15">
+    <tl f="N" t="p" o="800631" c="RB" n="17276" />
+    <ar pt="2403211738" pp="8" l="30"
       ppth="Waldshut|Dogern|Albbruck|Laufenburg(Baden)Ost|Laufenburg(Baden)|Murg(Baden)|Bad Säckingen|Wehr-Brennet|Schwörstadt|Beuggen|Rheinfelden(Baden)|Herten(Baden)|Wyhlen|Grenzach" />
   </s>
-  <s id="-9063812370709340026-2403211148-20">
-    <tl f="N" t="p" o="8006C5" c="RE" n="17013" />
-    <ar pt="2403211330" pp="10" l="7"
-      ppth="Offenburg|Lahr(Schwarzw)|Orschweier|Ringsheim/Europa-Park|Herbolzheim(Breisg)|Kenzingen|Riegel-Malterdingen|Emmendingen|Denzlingen|Freiburg(Breisgau) Hbf|Schallstadt|Bad Krozingen|Heitersheim|Müllheim(Baden)|Schliengen|Bad Bellingen|Efringen-Kirchen|Haltingen|Weil am Rhein" />
-  </s>
-  <s id="6779250959882712209-2403211304-2">
-    <tl t="p" o="L7" c="SBB" n="87832" />
-    <ar pt="2403211310" pp="6" l="S6" ppth="Basel SBB" />
-    <dp pt="2403211317" pp="6" l="S6"
+  <s id="4015029093411239043-2403211704-2">
+    <tl t="p" o="L7" c="SBB" n="87848" />
+    <ar pt="2403211710" pp="6" l="S6" ppth="Basel SBB" />
+    <dp pt="2403211717" pp="6" l="S6"
       ppth="Riehen Niederholz|Riehen|Lörrach-Stetten|Lörrach Museum/Burghof|Lörrach Hbf|Lörrach Schwarzwaldstraße|Lörrach-Haagen/Messe|Lörrach-Brombach/Hauingen|Steinen|Maulburg|Schopfheim West|Schopfheim|Schopfheim-Schlattholz|Fahrnau|Hausen-Raitbach|Zell(Wiesental)" />
+  </s>
+  <s id="-2877817711072783796-2403211753-1">
+    <tl f="N" t="p" o="800631" c="RB" n="17273" />
+    <dp pt="2403211753" pp="8" l="30"
+      ppth="Grenzach|Wyhlen|Herten(Baden)|Rheinfelden(Baden)|Beuggen|Schwörstadt|Wehr-Brennet|Bad Säckingen|Murg(Baden)|Laufenburg(Baden)|Laufenburg(Baden)Ost|Albbruck|Dogern|Waldshut|Tiengen(Hochrhein)|Lauchringen West|Lauchringen" />
+  </s>
+  <s id="-7393110806929861849-2403211642-20">
+    <tl f="N" t="p" o="8006C4" c="RB" n="17181" />
+    <ar pt="2403211743" pp="9" l="27"
+      ppth="Freiburg(Breisgau) Hbf|Freiburg-St Georgen|Ebringen|Schallstadt|Norsingen|Bad Krozingen|Heitersheim|Buggingen|Müllheim(Baden)|Auggen|Schliengen|Bad Bellingen|Rheinweiler|Kleinkems|Istein|Efringen-Kirchen|Eimeldingen|Haltingen|Weil am Rhein" />
+  </s>
+  <s id="789673518482065423-2403211634-17">
+    <tl t="p" o="L7" c="SBB" n="87847" />
+    <ar pt="2403211713" pp="11" l="S6"
+      ppth="Zell(Wiesental)|Hausen-Raitbach|Fahrnau|Schopfheim-Schlattholz|Schopfheim|Schopfheim West|Maulburg|Steinen|Lörrach-Brombach/Hauingen|Lörrach-Haagen/Messe|Lörrach Schwarzwaldstraße|Lörrach Hbf|Lörrach Museum/Burghof|Lörrach-Stetten|Riehen|Riehen Niederholz" />
+    <dp pt="2403211719" pp="11" l="S6" ppth="Basel SBB" />
   </s>
 </timetable>

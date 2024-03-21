@@ -1,5 +1,8 @@
+mod cache;
+
 use std::str::FromStr;
 
+use chrono::Local;
 use reqwest::{
     header::{HeaderMap, HeaderName, HeaderValue},
     Client,
@@ -11,43 +14,47 @@ use crate::{
     statics::{API_URL, TIMETABLES_LIMIT_MIN},
 };
 
-#[derive(Debug, Default)]
+use self::cache::ServerCache;
+
+#[derive(Default)]
 pub(crate) struct DBebbleServer {
     client: Client,
     creds: APIKeys,
-    num_sent: u8,
+    cache: ServerCache,
 }
 
 impl DBebbleServer {
     pub fn reset(&mut self) -> () {
-        self.num_sent = 0;
+        self.cache.refresh_requests();
     }
 
     pub async fn get_current_plan(
         &mut self,
         eva_id: &str,
-        date: &str,
-        time: &str,
-    ) -> Result<String, String> {
+        to: &str,
+    ) -> Result<Vec<String>, String> {
+        let time = Local::now().to_string();
+        let (date, time) = extract_date_time(time);
         let url = format!("{}/plan/{}/{}/{}", API_URL, eva_id, date, time);
-        let request = self.client.get(url).headers(self.generate_headers());
-        if self.num_sent == TIMETABLES_LIMIT_MIN {
-            return Err("Too much requests, waiting for 60 secs..".to_string());
+        self.cache.update_state();
+        if self.cache.get_state() == TIMETABLES_LIMIT_MIN {
+            return Err("Too much requests, waiting for 60 secs before next request..".to_string());
         }
+        let request = self.client.get(url).headers(self.generate_headers());
         let response: String = request.send().await.unwrap().text().await.unwrap();
-        self.num_sent += 1;
-        Ok(response)
+        let train_times = ResponseParser::parse(response.as_str(), to.to_lowercase().as_str());
+        Ok(train_times)
     }
 
     pub async fn get_station_eva(&mut self, station: &str) -> Result<String, String> {
         let url = format!("{}/{}", API_URL, self.generate_station_query(station));
-        let request = self.client.get(url).headers(self.generate_headers());
-        if self.num_sent == TIMETABLES_LIMIT_MIN {
+        self.cache.update_state();
+        if self.cache.get_state() == TIMETABLES_LIMIT_MIN {
             return Err("Too much requests, waiting for 60 secs..".to_string());
         }
+        let request = self.client.get(url).headers(self.generate_headers());
         let response: String = request.send().await.unwrap().text().await.unwrap();
         let response = self.extract_eva(response);
-        self.num_sent += 1;
         Ok(response)
     }
 
@@ -85,4 +92,14 @@ impl DBebbleServer {
 
         headers
     }
+}
+
+fn extract_date_time(date_time: String) -> (String, String) {
+    let (date, time) = date_time.split_at(date_time.find(" ").unwrap());
+    let date: Vec<_> = date.split("-").collect();
+    let date: String = date.join("");
+    let time_no_secs: String = time.splitn(2, ":").collect();
+    let (time, _) = time_no_secs.split_at(time_no_secs.find(":").unwrap());
+
+    (date[2..].to_string(), time[1..3].to_string())
 }
