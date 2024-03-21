@@ -18,7 +18,7 @@ async fn main() -> reqwest::Result<()> {
         }
         match server.get_current_plan(from_id.as_str(), to).await {
             Ok(times) => {
-                println!("Next train to {to:?}: {:?}", times.iter().next().unwrap());
+                println!("Next train to {to:?}: {:?}", times.iter().next());
             }
             Err(e) => {
                 println!("LOG: {e:?}");

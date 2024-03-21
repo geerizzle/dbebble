@@ -59,18 +59,21 @@ impl DBebbleServer {
     }
 
     fn extract_eva(&self, response: String) -> String {
-        let mut id = String::new();
-        for x in response.split(" ") {
-            let pos_equal = x.find("=");
-            if pos_equal.is_none() {
-                continue;
-            }
-            let (key, value) = x.split_at(pos_equal.unwrap());
-            if key == "eva" {
-                id = value.chars().filter(|ch| ch.is_digit(10)).collect();
-            }
-        }
-        id
+        response
+            .split_whitespace()
+            .filter_map(|x| {
+                let pos_equal = x.find('=');
+                pos_equal.and_then(|pos| {
+                    let (key, value) = x.split_at(pos);
+                    if key == "eva" {
+                        Some(value.chars().filter(|ch| ch.is_digit(10)).collect())
+                    } else {
+                        None
+                    }
+                })
+            })
+            .next()
+            .unwrap_or_else(String::new)
     }
 
     fn generate_station_query(&self, query: &str) -> String {
