@@ -1,4 +1,4 @@
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub(crate) struct ServerCache {
     current_plan: Vec<String>,
     sent_requests: u8,

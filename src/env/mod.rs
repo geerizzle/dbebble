@@ -3,7 +3,7 @@ use std::{
     io::{BufRead, BufReader},
 };
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub(crate) struct APIKeys {
     pub(crate) client_id: String,
     pub(crate) api_key: String,

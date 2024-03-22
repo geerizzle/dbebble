@@ -7,6 +7,8 @@ use reqwest::{
     header::{HeaderMap, HeaderName, HeaderValue},
     Client,
 };
+use std::time::Duration;
+use tokio::time;
 
 use crate::{
     env::APIKeys,
@@ -16,7 +18,7 @@ use crate::{
 
 use self::cache::ServerCache;
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub(crate) struct DBebbleServer {
     client: Client,
     creds: APIKeys,
@@ -26,6 +28,36 @@ pub(crate) struct DBebbleServer {
 impl DBebbleServer {
     pub fn reset(&mut self) -> () {
         self.cache.refresh_requests();
+    }
+
+    pub async fn fetch_updates_task(&mut self) {
+        let mut interval = time::interval(Duration::from_secs(5));
+        loop {
+            println!("5 seconds...");
+            interval.tick().await;
+        }
+    }
+
+    pub async fn fetch_plan_task(&mut self) {
+        let from = "basel bad";
+        let from_id = self.get_station_eva(from).await.unwrap();
+        let to = "Lauchringen";
+        let mut interval = time::interval(Duration::from_secs(60));
+        loop {
+            if from == "quit" {
+                break;
+            }
+            match self.get_current_plan(from_id.as_str(), to).await {
+                Ok(times) => {
+                    println!("Next train to {to:?}: {:?}", times.iter().next());
+                }
+                Err(e) => {
+                    println!("LOG: {e:?}");
+                    self.reset();
+                }
+            }
+            interval.tick().await;
+        }
     }
 
     pub async fn get_current_plan(
