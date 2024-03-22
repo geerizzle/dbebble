@@ -5,7 +5,7 @@ use quick_xml::{events::Event, name::QName, Reader};
 pub struct ResponseParser;
 
 impl ResponseParser {
-    pub fn parse(response: &str, dest: &str) -> Vec<String> {
+    pub fn parse_plan(response: &str, dest: &str) -> Vec<String> {
         let mut reader = Reader::from_str(response);
         let mut in_ride = false;
         let mut time = String::new();
@@ -54,7 +54,7 @@ mod tests {
     #[test]
     fn test_parse() -> std::io::Result<()> {
         let response = fs::read_to_string("tests/station_response.xml")?;
-        let result = ResponseParser::parse(response.as_str(), "wyhlen");
+        let result = ResponseParser::parse_plan(response.as_str(), "wyhlen");
         println!("Departure times: {result:?}");
 
         Ok(())

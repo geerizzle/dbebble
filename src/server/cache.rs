@@ -1,6 +1,6 @@
 use crate::env::APIKeys;
 
-#[derive(Default, Clone)]
+#[derive(Default)]
 pub(crate) struct ServerCache {
     current_plan: Vec<String>,
     pub(crate) creds: APIKeys,

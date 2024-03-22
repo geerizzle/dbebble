@@ -1,13 +1,16 @@
 use super::cache::ServerCache;
-use std::time::Duration;
+use std::{
+    sync::{Arc, Mutex},
+    time::Duration,
+};
 use tokio::time;
 
 pub struct UpdatesFetcher {
-    cache: ServerCache,
+    cache: Arc<Mutex<ServerCache>>,
 }
 
 impl UpdatesFetcher {
-    pub fn new(cache: ServerCache) -> Self {
+    pub fn new(cache: Arc<Mutex<ServerCache>>) -> Self {
         Self { cache }
     }
 
