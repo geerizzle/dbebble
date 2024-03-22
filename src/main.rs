@@ -1,4 +1,6 @@
-use server::DBebbleServer;
+use server::cache::ServerCache;
+
+use crate::server::{plan::PlanFetcher, updates::UpdatesFetcher};
 
 mod env;
 mod parser;
@@ -18,10 +20,13 @@ async fn main() -> std::io::Result<()> {
     let _ = stdin.read_line(&mut buffer)?;
     let to = buffer.trim().to_string();
 
-    let mut server_plan = DBebbleServer::new(from, to);
-    let mut server_updates = server_plan.clone();
-    let plan_handle = tokio::spawn(async move { server_plan.fetch_plan_task().await });
-    let updates_handle = tokio::spawn(async move { server_updates.fetch_updates_task().await });
+    let cache = ServerCache::new(from, to);
+    let mut plan_fetcher = PlanFetcher::new(cache.clone());
+    let mut updates_fetcher = UpdatesFetcher::new(cache.clone());
+    let plan_handle = tokio::spawn(async move { plan_fetcher.start().await });
+    let updates_handle = tokio::spawn(async move { updates_fetcher.start().await });
+
     let _ = tokio::try_join!(plan_handle, updates_handle);
+
     Ok(())
 }

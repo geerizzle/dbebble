@@ -1,137 +1,47 @@
-mod cache;
+pub(crate) mod cache;
+pub(crate) mod plan;
+pub(crate) mod updates;
 
 use std::str::FromStr;
 
-use chrono::Local;
-use reqwest::{
-    header::{HeaderMap, HeaderName, HeaderValue},
-    Client,
-};
-use std::time::Duration;
-use tokio::time;
-
-use crate::{
-    env::APIKeys,
-    parser::ResponseParser,
-    statics::{API_URL, TIMETABLES_LIMIT_MIN},
-};
-
 use self::cache::ServerCache;
+use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
 
-#[derive(Default, Clone)]
-pub(crate) struct DBebbleServer {
-    client: Client,
-    creds: APIKeys,
-    cache: ServerCache,
-    from: String,
-    to: String,
+fn extract_eva(response: String) -> String {
+    response
+        .split_whitespace()
+        .filter_map(|x| {
+            let pos_equal = x.find('=');
+            pos_equal.and_then(|pos| {
+                let (key, value) = x.split_at(pos);
+                if key == "eva" {
+                    Some(value.chars().filter(|ch| ch.is_digit(10)).collect())
+                } else {
+                    None
+                }
+            })
+        })
+        .next()
+        .unwrap_or_else(String::new)
+}
+fn generate_station_query(query: &str) -> String {
+    let parsed: Vec<&str> = query.split(" ").collect();
+    let query: String = "/station/".to_string() + parsed.join("%20").to_lowercase().as_str();
+    query
 }
 
-impl DBebbleServer {
-    pub fn new(from: String, to: String) -> Self {
-        Self {
-            from,
-            to,
-            ..Self::default()
-        }
-    }
+fn generate_headers(cache: &ServerCache) -> HeaderMap {
+    let mut headers = HeaderMap::new();
+    headers.insert(
+        HeaderName::from_str("DB-Client-Id").unwrap(),
+        HeaderValue::from_str(cache.creds.client_id.as_str()).unwrap(),
+    );
+    headers.insert(
+        HeaderName::from_str("DB-Api-Key").unwrap(),
+        HeaderValue::from_str(cache.creds.api_key.as_str()).unwrap(),
+    );
 
-    pub fn reset(&mut self) -> () {
-        self.cache.refresh_requests();
-    }
-
-    pub async fn fetch_updates_task(&mut self) {
-        let mut interval = time::interval(Duration::from_secs(5));
-        loop {
-            println!("5 seconds...");
-            interval.tick().await;
-        }
-    }
-
-    pub async fn fetch_plan_task(&mut self) {
-        let from = self.from.clone();
-        let from_id = self.get_station_eva(&from).await.unwrap();
-        let mut interval = time::interval(Duration::from_secs(60));
-        loop {
-            if self.from == "quit" {
-                break;
-            }
-            match self.get_current_plan(&from_id).await {
-                Ok(times) => {
-                    println!("Next train to {:?}: {:?}", self.to, times.iter().next());
-                }
-                Err(e) => {
-                    println!("LOG: {e:?}");
-                    self.reset();
-                }
-            }
-            interval.tick().await;
-        }
-    }
-
-    pub async fn get_current_plan(&mut self, eva_id: &String) -> Result<Vec<String>, String> {
-        let time = Local::now().to_string();
-        let (date, time) = extract_date_time(time);
-        let url = format!("{}/plan/{}/{}/{}", API_URL, eva_id, date, time);
-        self.cache.update_state();
-        if self.cache.get_state() == TIMETABLES_LIMIT_MIN {
-            return Err("Too much requests, waiting for 60 secs before next request..".to_string());
-        }
-        let request = self.client.get(url).headers(self.generate_headers());
-        let response: String = request.send().await.unwrap().text().await.unwrap();
-        let train_times = ResponseParser::parse(&response[..], &self.to.to_lowercase()[..]);
-        Ok(train_times)
-    }
-
-    pub async fn get_station_eva(&mut self, station: &String) -> Result<String, String> {
-        let url = format!("{}/{}", API_URL, self.generate_station_query(station));
-        self.cache.update_state();
-        if self.cache.get_state() == TIMETABLES_LIMIT_MIN {
-            return Err("Too much requests, waiting for 60 secs..".to_string());
-        }
-        let request = self.client.get(url).headers(self.generate_headers());
-        let response: String = request.send().await.unwrap().text().await.unwrap();
-        let response = self.extract_eva(response);
-        Ok(response)
-    }
-
-    fn extract_eva(&self, response: String) -> String {
-        response
-            .split_whitespace()
-            .filter_map(|x| {
-                let pos_equal = x.find('=');
-                pos_equal.and_then(|pos| {
-                    let (key, value) = x.split_at(pos);
-                    if key == "eva" {
-                        Some(value.chars().filter(|ch| ch.is_digit(10)).collect())
-                    } else {
-                        None
-                    }
-                })
-            })
-            .next()
-            .unwrap_or_else(String::new)
-    }
-
-    fn generate_station_query(&self, query: &str) -> String {
-        let parsed: Vec<&str> = query.split(" ").collect();
-        let query: String = "/station/".to_string() + parsed.join("%20").to_lowercase().as_str();
-        query
-    }
-
-    fn generate_headers(&self) -> HeaderMap {
-        let mut headers = HeaderMap::new();
-        headers.insert(
-            HeaderName::from_str("DB-Client-Id").unwrap(),
-            HeaderValue::from_str(self.creds.client_id.as_str()).unwrap(),
-        );
-        headers.insert(
-            HeaderName::from_str("DB-Api-Key").unwrap(),
-            HeaderValue::from_str(self.creds.api_key.as_str()).unwrap(),
-        );
-
-        headers
-    }
+    headers
 }
 
 fn extract_date_time(date_time: String) -> (String, String) {
