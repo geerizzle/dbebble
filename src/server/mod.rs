@@ -23,9 +23,19 @@ pub(crate) struct DBebbleServer {
     client: Client,
     creds: APIKeys,
     cache: ServerCache,
+    from: String,
+    to: String,
 }
 
 impl DBebbleServer {
+    pub fn new(from: String, to: String) -> Self {
+        Self {
+            from,
+            to,
+            ..Self::default()
+        }
+    }
+
     pub fn reset(&mut self) -> () {
         self.cache.refresh_requests();
     }
@@ -39,17 +49,16 @@ impl DBebbleServer {
     }
 
     pub async fn fetch_plan_task(&mut self) {
-        let from = "basel bad";
-        let from_id = self.get_station_eva(from).await.unwrap();
-        let to = "Lauchringen";
+        let from = self.from.clone();
+        let from_id = self.get_station_eva(&from).await.unwrap();
         let mut interval = time::interval(Duration::from_secs(60));
         loop {
-            if from == "quit" {
+            if self.from == "quit" {
                 break;
             }
-            match self.get_current_plan(from_id.as_str(), to).await {
+            match self.get_current_plan(&from_id).await {
                 Ok(times) => {
-                    println!("Next train to {to:?}: {:?}", times.iter().next());
+                    println!("Next train to {:?}: {:?}", self.to, times.iter().next());
                 }
                 Err(e) => {
                     println!("LOG: {e:?}");
@@ -60,11 +69,7 @@ impl DBebbleServer {
         }
     }
 
-    pub async fn get_current_plan(
-        &mut self,
-        eva_id: &str,
-        to: &str,
-    ) -> Result<Vec<String>, String> {
+    pub async fn get_current_plan(&mut self, eva_id: &String) -> Result<Vec<String>, String> {
         let time = Local::now().to_string();
         let (date, time) = extract_date_time(time);
         let url = format!("{}/plan/{}/{}/{}", API_URL, eva_id, date, time);
@@ -74,11 +79,11 @@ impl DBebbleServer {
         }
         let request = self.client.get(url).headers(self.generate_headers());
         let response: String = request.send().await.unwrap().text().await.unwrap();
-        let train_times = ResponseParser::parse(response.as_str(), to.to_lowercase().as_str());
+        let train_times = ResponseParser::parse(&response[..], &self.to.to_lowercase()[..]);
         Ok(train_times)
     }
 
-    pub async fn get_station_eva(&mut self, station: &str) -> Result<String, String> {
+    pub async fn get_station_eva(&mut self, station: &String) -> Result<String, String> {
         let url = format!("{}/{}", API_URL, self.generate_station_query(station));
         self.cache.update_state();
         if self.cache.get_state() == TIMETABLES_LIMIT_MIN {
