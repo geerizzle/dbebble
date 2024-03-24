@@ -10,7 +10,7 @@ mod server;
 mod statics;
 mod ui;
 
-#[tokio::main(flavor = "current_thread")]
+#[tokio::main]
 async fn main() -> std::io::Result<()> {
     let mut buffer = String::new();
     let stdin = std::io::stdin();

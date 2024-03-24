@@ -1,4 +1,7 @@
-use super::cache::ServerCache;
+use crate::{parser::update::UpdateParser, statics::API_URL};
+
+use super::{cache::ServerCache, generate_headers};
+use reqwest::Client;
 use std::{
     sync::{Arc, Mutex},
     time::Duration,
@@ -6,18 +9,32 @@ use std::{
 use tokio::time;
 
 pub struct UpdatesFetcher {
+    client: Client,
     cache: Arc<Mutex<ServerCache>>,
 }
 
 impl UpdatesFetcher {
     pub fn new(cache: Arc<Mutex<ServerCache>>) -> Self {
-        Self { cache }
+        Self {
+            client: Client::default(),
+            cache,
+        }
     }
 
     pub async fn start(&mut self) {
-        let mut interval = time::interval(Duration::from_secs(5));
+        let mut interval = time::interval(Duration::from_secs(30));
         loop {
-            println!("5 second task");
+            let request = self
+                .client
+                .get(format!(
+                    "{}/rchg/{}",
+                    API_URL,
+                    self.cache.lock().unwrap().get_eva_id()
+                ))
+                .headers(generate_headers(&self.cache.lock().unwrap()));
+
+            let response = request.send().await.unwrap().text().await.unwrap();
+            let parsed = UpdateParser::parse_update(response.as_str(), &self.cache.lock().unwrap());
             interval.tick().await;
         }
     }

@@ -7,7 +7,7 @@ use std::time::Duration;
 use tokio::time;
 
 use crate::{
-    parser::ResponseParser,
+    parser::plan::PlanParser,
     statics::{API_URL, TIMETABLES_LIMIT_MIN},
 };
 
@@ -33,7 +33,8 @@ impl PlanFetcher {
         let from_id = self.get_station_eva(&from).await.unwrap();
         let mut interval = time::interval(Duration::from_secs(3600));
         loop {
-            if from == "quit" {
+            if from_id == "quit" {
+                println!("Qutting the program");
                 break;
             }
             match self.get_current_plan(&from_id).await {
@@ -51,7 +52,10 @@ impl PlanFetcher {
         }
     }
 
-    pub async fn get_current_plan(&mut self, eva_id: &String) -> Result<BTreeMap<String, String>, String> {
+    pub async fn get_current_plan(
+        &mut self,
+        eva_id: &String,
+    ) -> Result<BTreeMap<String, String>, String> {
         let time = Local::now().to_string();
         let (date, time) = extract_date_time(time);
         let url = format!("{}/plan/{}/{}/{}", API_URL, eva_id, date, time);
@@ -60,7 +64,7 @@ impl PlanFetcher {
         let response: String = request.send().await.unwrap().text().await.unwrap();
         let cache = self.cache.lock().unwrap();
         let destination = cache.get_destination().to_lowercase();
-        let train_times = ResponseParser::parse_plan(&response[..], &destination[..]);
+        let train_times = PlanParser::parse_plan(&response[..], &destination[..]);
         Ok(train_times)
     }
 
@@ -70,6 +74,7 @@ impl PlanFetcher {
         let request = self.client.get(url).headers(headers);
         let response: String = request.send().await.unwrap().text().await.unwrap();
         let response = extract_eva(response);
+        self.cache.lock().unwrap().update_eva_id(response.clone());
         Ok(response)
     }
 }
