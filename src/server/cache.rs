@@ -1,8 +1,10 @@
+use std::collections::BTreeMap;
+
 use crate::env::APIKeys;
 
 #[derive(Default)]
 pub(crate) struct ServerCache {
-    current_plan: Vec<String>,
+    current_plan: BTreeMap<String, String>,
     pub(crate) creds: APIKeys,
     from: String,
     to: String,
@@ -17,7 +19,7 @@ impl ServerCache {
         }
     }
 
-    pub(crate) fn update_cache(&mut self, current_plan: Vec<String>) {
+    pub(crate) fn update_cache(&mut self, current_plan: BTreeMap<String, String>) {
         self.current_plan = current_plan;
     }
 

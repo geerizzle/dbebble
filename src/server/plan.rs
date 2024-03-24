@@ -1,4 +1,4 @@
-use std::{str::FromStr, sync::Mutex};
+use std::{collections::BTreeMap, str::FromStr, sync::Mutex};
 
 use chrono::Local;
 use reqwest::Client;
@@ -51,7 +51,7 @@ impl PlanFetcher {
         }
     }
 
-    pub async fn get_current_plan(&mut self, eva_id: &String) -> Result<Vec<String>, String> {
+    pub async fn get_current_plan(&mut self, eva_id: &String) -> Result<BTreeMap<String, String>, String> {
         let time = Local::now().to_string();
         let (date, time) = extract_date_time(time);
         let url = format!("{}/plan/{}/{}/{}", API_URL, eva_id, date, time);
