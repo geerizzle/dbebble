@@ -1,4 +1,4 @@
-use std::{collections::BTreeMap, str::FromStr, sync::Mutex};
+use std::{collections::BTreeMap, sync::Mutex};
 
 use chrono::Local;
 use reqwest::Client;
@@ -6,10 +6,7 @@ use std::sync::Arc;
 use std::time::Duration;
 use tokio::time;
 
-use crate::{
-    parser::plan::PlanParser,
-    statics::{API_URL, TIMETABLES_LIMIT_MIN},
-};
+use crate::{logger::Logger, parser::plan::PlanParser, statics::API_URL};
 
 use super::{
     cache::ServerCache, extract_date_time, extract_eva, generate_headers, generate_station_query,
@@ -18,12 +15,14 @@ use super::{
 pub struct PlanFetcher {
     client: Client,
     cache: Arc<Mutex<ServerCache>>,
+    logger: Arc<Mutex<Logger>>,
 }
 
 impl PlanFetcher {
-    pub fn new(cache: Arc<Mutex<ServerCache>>) -> Self {
+    pub fn new(cache: Arc<Mutex<ServerCache>>, logger: Arc<Mutex<Logger>>) -> Self {
         Self {
             client: Client::default(),
+            logger,
             cache,
         }
     }
@@ -45,7 +44,7 @@ impl PlanFetcher {
                     cache.update_cache(times);
                 }
                 Err(e) => {
-                    println!("LOG: {e:?}");
+                    println!("Error: {e:?}");
                 }
             }
             interval.tick().await;

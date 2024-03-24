@@ -1,4 +1,4 @@
-use crate::{parser::update::UpdateParser, statics::API_URL};
+use crate::{logger::Logger, parser::update::UpdateParser, statics::API_URL};
 
 use super::{cache::ServerCache, generate_headers};
 use reqwest::Client;
@@ -11,13 +11,15 @@ use tokio::time;
 pub struct UpdatesFetcher {
     client: Client,
     cache: Arc<Mutex<ServerCache>>,
+    logger: Arc<Mutex<Logger>>,
 }
 
 impl UpdatesFetcher {
-    pub fn new(cache: Arc<Mutex<ServerCache>>) -> Self {
+    pub fn new(cache: Arc<Mutex<ServerCache>>, logger: Arc<Mutex<Logger>>) -> Self {
         Self {
             client: Client::default(),
             cache,
+            logger,
         }
     }
 
