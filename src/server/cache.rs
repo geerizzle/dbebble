@@ -28,7 +28,6 @@ impl ServerCache {
         let url = format!("{}/station/*", API_URL);
         let request = client.get(url).headers(generate_headers(&self));
         let response = request.send().await.unwrap().text().await.unwrap();
-        println!("{response:?}");
         self.eva_map = EvaParser::parse_eva(&response);
     }
 

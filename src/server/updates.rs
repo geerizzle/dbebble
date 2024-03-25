@@ -1,4 +1,4 @@
-use crate::{logger::Logger, parser::update::UpdateParser, statics::API_URL};
+use crate::{parser::update::UpdateParser, statics::API_URL};
 
 use super::{cache::ServerCache, generate_headers};
 use reqwest::Client;
@@ -11,21 +11,19 @@ use tokio::time;
 pub struct UpdatesFetcher {
     client: Client,
     cache: Arc<Mutex<ServerCache>>,
-    logger: Arc<Mutex<Logger>>,
 }
 
 impl UpdatesFetcher {
-    pub fn new(cache: Arc<Mutex<ServerCache>>, logger: Arc<Mutex<Logger>>) -> Self {
+    pub fn new(cache: Arc<Mutex<ServerCache>>) -> Self {
         Self {
             client: Client::default(),
             cache,
-            logger,
         }
     }
 
     pub async fn start(&mut self) {
         let mut interval = time::interval(Duration::from_secs(30));
-        let update_parser = UpdateParser::new(Arc::clone(&self.logger), Arc::clone(&self.cache));
+        let update_parser = UpdateParser::new(Arc::clone(&self.cache));
         loop {
             let request = self
                 .client

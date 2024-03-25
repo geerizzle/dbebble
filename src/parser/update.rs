@@ -1,17 +1,16 @@
-use crate::{logger::Logger, server::cache::ServerCache};
+use crate::server::cache::ServerCache;
 use std::collections::BTreeMap;
 use std::sync::{Arc, Mutex};
 
 use quick_xml::{events::Event, name::QName, Reader};
 
 pub(crate) struct UpdateParser {
-    logger: Arc<Mutex<Logger>>,
     cache: Arc<Mutex<ServerCache>>,
 }
 
 impl UpdateParser {
-    pub fn new(logger: Arc<Mutex<Logger>>, cache: Arc<Mutex<ServerCache>>) -> Self {
-        Self { logger, cache }
+    pub fn new(cache: Arc<Mutex<ServerCache>>) -> Self {
+        Self { cache }
     }
 
     pub(crate) fn parse_update(&self, response: &str) -> std::io::Result<()> {

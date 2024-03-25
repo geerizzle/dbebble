@@ -6,7 +6,7 @@ use std::sync::Arc;
 use std::time::Duration;
 use tokio::time;
 
-use crate::{logger::Logger, parser::plan::PlanParser, statics::API_URL};
+use crate::{parser::plan::PlanParser, statics::API_URL};
 
 use super::{
     cache::ServerCache, extract_date_time, extract_eva, generate_headers, generate_station_query,
@@ -15,14 +15,12 @@ use super::{
 pub struct PlanFetcher {
     client: Client,
     cache: Arc<Mutex<ServerCache>>,
-    logger: Arc<Mutex<Logger>>,
 }
 
 impl PlanFetcher {
-    pub fn new(cache: Arc<Mutex<ServerCache>>, logger: Arc<Mutex<Logger>>) -> Self {
+    pub fn new(cache: Arc<Mutex<ServerCache>>) -> Self {
         Self {
             client: Client::default(),
-            logger,
             cache,
         }
     }
@@ -55,7 +53,7 @@ impl PlanFetcher {
         &mut self,
         eva_id: &String,
     ) -> Result<BTreeMap<String, String>, String> {
-        let plan_parser = PlanParser::new(Arc::clone(&self.logger), Arc::clone(&self.cache));
+        let plan_parser = PlanParser::new(Arc::clone(&self.cache));
         let time = Local::now().to_string();
         let (date, time) = extract_date_time(time);
         let url = format!("{}/plan/{}/{}/{}", API_URL, eva_id, date, time);

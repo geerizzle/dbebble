@@ -1,17 +1,16 @@
 use std::collections::BTreeMap;
 use std::sync::{Arc, Mutex};
 
-use crate::{logger::Logger, server::cache::ServerCache};
+use crate::server::cache::ServerCache;
 use quick_xml::{events::Event, name::QName, Reader};
 
 pub struct PlanParser {
-    logger: Arc<Mutex<Logger>>,
     cache: Arc<Mutex<ServerCache>>,
 }
 
 impl PlanParser {
-    pub fn new(logger: Arc<Mutex<Logger>>, cache: Arc<Mutex<ServerCache>>) -> Self {
-        Self { logger, cache }
+    pub fn new(cache: Arc<Mutex<ServerCache>>) -> Self {
+        Self { cache }
     }
 
     pub fn parse_plan(&self, response: &str, dest: &str) -> BTreeMap<String, String> {
