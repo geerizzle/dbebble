@@ -29,6 +29,7 @@ impl Logger {
 
         log_file.write_all(self.buffer.as_bytes())?;
         log_file.sync_all()?;
+        self.buffer.clear();
         Ok(())
     }
 

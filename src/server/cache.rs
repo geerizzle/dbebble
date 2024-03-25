@@ -1,10 +1,13 @@
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap};
 
-use crate::env::APIKeys;
+use crate::{env::APIKeys, parser::eva::EvaParser, statics::API_URL};
+
+use super::generate_headers;
 
 #[derive(Default)]
 pub(crate) struct ServerCache {
     current_plan: BTreeMap<String, String>,
+    eva_map: HashMap<String, String>,
     pub(crate) creds: APIKeys,
     eva_id: String,
     from: String,
@@ -18,6 +21,19 @@ impl ServerCache {
             to,
             ..Self::default()
         }
+    }
+
+    pub(crate) async fn fetch_eva_map(&mut self) {
+        let client = reqwest::Client::new();
+        let url = format!("{}/station/*", API_URL);
+        let request = client.get(url).headers(generate_headers(&self));
+        let response = request.send().await.unwrap().text().await.unwrap();
+        println!("{response:?}");
+        self.eva_map = EvaParser::parse_eva(&response);
+    }
+
+    pub(crate) fn get_eva_map(&self) -> &HashMap<String, String> {
+        &self.eva_map
     }
 
     pub(crate) fn update_cache(&mut self, current_plan: BTreeMap<String, String>) {

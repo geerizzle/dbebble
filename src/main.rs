@@ -29,7 +29,9 @@ async fn main() -> std::io::Result<()> {
     let logger = logger::Logger::new();
     let logger_plan = Arc::new(Mutex::new(logger));
     let logger_updates = Arc::clone(&logger_plan);
-    let cache = Arc::new(Mutex::new(ServerCache::new(from, to)));
+    let mut serv_cache = ServerCache::new(from, to);
+    let _ = serv_cache.fetch_eva_map().await;
+    let cache = Arc::new(Mutex::new(serv_cache));
     let cache_arc = Arc::clone(&cache);
     let mut plan_fetcher = PlanFetcher::new(cache, logger_plan);
     let mut updates_fetcher = UpdatesFetcher::new(cache_arc, logger_updates);
