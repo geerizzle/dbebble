@@ -55,6 +55,7 @@ impl PlanFetcher {
         &mut self,
         eva_id: &String,
     ) -> Result<BTreeMap<String, String>, String> {
+        let plan_parser = PlanParser::new(Arc::clone(&self.logger), Arc::clone(&self.cache));
         let time = Local::now().to_string();
         let (date, time) = extract_date_time(time);
         let url = format!("{}/plan/{}/{}/{}", API_URL, eva_id, date, time);
@@ -63,7 +64,7 @@ impl PlanFetcher {
         let response: String = request.send().await.unwrap().text().await.unwrap();
         let cache = self.cache.lock().unwrap();
         let destination = cache.get_destination().to_lowercase();
-        let train_times = PlanParser::parse_plan(&response[..], &destination[..]);
+        let train_times = plan_parser.parse_plan(&response[..], &destination[..]);
         Ok(train_times)
     }
 

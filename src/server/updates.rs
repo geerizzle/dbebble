@@ -25,6 +25,7 @@ impl UpdatesFetcher {
 
     pub async fn start(&mut self) {
         let mut interval = time::interval(Duration::from_secs(30));
+        let update_parser = UpdateParser::new(Arc::clone(&self.logger), Arc::clone(&self.cache));
         loop {
             let request = self
                 .client
@@ -36,7 +37,7 @@ impl UpdatesFetcher {
                 .headers(generate_headers(&self.cache.lock().unwrap()));
 
             let response = request.send().await.unwrap().text().await.unwrap();
-            let parsed = UpdateParser::parse_update(response.as_str(), &self.cache.lock().unwrap());
+            let parsed = update_parser.parse_update(response.as_str());
             interval.tick().await;
         }
     }
