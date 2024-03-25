@@ -1,5 +1,6 @@
 use std::{collections::HashMap, time::Instant};
 
+use chrono::Local;
 use regex::Regex;
 
 #[derive(Default)]
@@ -22,7 +23,12 @@ impl QGramIndex {
             }
         }
         let duration = start.elapsed();
-        println!("LOG: QGram index built in {:?}s", duration.as_secs());
+        let time = Local::now().to_string();
+        println!(
+            "{} | LOG: QGram index built in {:?}s",
+            time,
+            duration.as_secs()
+        );
     }
 
     pub fn print_index(&self) {
